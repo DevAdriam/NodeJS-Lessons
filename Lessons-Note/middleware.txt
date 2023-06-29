@@ -1,0 +1,25 @@
+1. app.use(path ,callback)  => often use to apply middleware to all routes that are coming in.
+                            placed at above of all http methods(get,post,..) to apply all.
+
+2. express.urlencoded({extended , inflate , limit , verify , ...}) return Object
+ => built in middleware fun: It parses incoming requests with URL-encoded
+    payloads and is based on a body parser
+
+3. express.json([options (just like urlencoded)]) return Object
+=> built in middleware fun : It parses incoming request with JSON payloads and is based
+    on a body-parser
+
+4. express.static ( root , [options]) return Object 
+root - describes the root dir: from which to serve static assets 
+=> built in middleware fun: it serves static files and is based on serve-static
+
+What are Static files ?
+Files that do not change in user's input or action , like images, JS files,CSS files,video files,
+even web pages . Normally we put them all into public directory
+
+The next() function is a function in the Express router that, when invoked, 
+executes the next middleware in the middleware stack. If the current middleware 
+function does not end the request-response cycle, it must call next() to pass control to 
+the next middleware function. Otherwise, the request will be left hanging.
+
+https://blog.webdevsimplified.com/2019-12/express-middleware-in-depth
