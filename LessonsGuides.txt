@@ -1,0 +1,7 @@
+Lesson 1 => os , path , creating own modules
+Lesson 2 => CRUD with file 
+Lesson 3 => NPM (Node Package Manager Modules) 
+Lesson 4 => Events emit (on,emit) / files => logEvents.js && EventsIndex.js
+Lesson 5 => Creating Web Server with Pure Node js / file => Webserverindex.js
+Lesson 6 => Creating Web Server with Express and Introduction to Express / file => ExpressIndex.js
+Lesson 7 => What is middleware? / file => middlewareIndex.js
