@@ -5,3 +5,9 @@ Lesson 4 => Events emit (on,emit) / files => logEvents.js && EventsIndex.js
 Lesson 5 => Creating Web Server with Pure Node js / file => Webserverindex.js
 Lesson 6 => Creating Web Server with Express and Introduction to Express / file => ExpressIndex.js
 Lesson 7 => What is middleware? / file => middlewareIndex.js
+Lesson 8 => How to set up route with Express router
+             1.serve static for sub route 
+             2.creating root route
+             3.route handle http methods
+/ file => middlewareIndex.js
+Lesson 9 => MVC (Model view controller)
