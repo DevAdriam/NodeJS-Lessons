@@ -34,6 +34,8 @@ app.use("/", require("./routes/root"));
 app.use("/subdir", require("./routes/subdir"));
 app.use("/about", require("./routes/about"));
 app.use("/employees", require("./routes/api/employee"));
+app.use("/register", require("./routes/register"));
+app.use("/auth", require("./routes/auth"));
 
 app.all("*", (req, res) => {
 	res.status = 404;
