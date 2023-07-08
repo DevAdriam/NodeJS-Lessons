@@ -1,0 +1,50 @@
+npm i dotenv jsonwebtoken cookie-parser
+
+JWT => can be considered to be a form of user identification that is issued after the 
+       initial user authentication take place.
+       when a user completes their login process and they are authenticated our rest api will issued
+       the client application an "Access Token" and a "Refresh Token"
+
+       Access Token => is given a short time before it expires (eg. 5 to 15 mins)
+       Refresh Token => is given a longer duration before it expires possibly several hours
+                        a day or even days
+
+        While no security measures are perfect we do want to consider the risks of cross-site scripting 
+        and cross-site request forgery 
+
+        Our api will send and receive access tokens as json data . To avoid the previously mentioned
+        risks it is recommended for front-end client applications "to only store access tokens in memory"
+        so they will be automatically lost when the app is closed.They should not be stored in "localStorage"
+        or "cookie".Essentially If you can store it somewhere with JavaScript , a hacker can also retrieve it
+        with JavaScript . Just keep access tokens in memory which you might also refers to current application 
+        state.
+
+        Our api will issue Refresh Token in "an http only cookie". This type of cookie is not accessible with JavaScript
+
+        Refresh Token do need to have "expiration" which will then requires users to log in again.
+        Refresh Token should not have the ability to issue the new Refresh Token because that essentially grants indefinite
+        access if a Refresh Token fall into the wrong hand.
+
+        So overall Access Tokens process , involves issuing the access toke during user authorization.
+        The user' applications will then access ou rest apis protected routes with the access token untill it 
+        expired.Our api will verify the access token with middle ware everytime the access token is used to make a 
+        request.When the access token does expires the application will need to send their refresh token to our API's 
+        refresh endpoint to get a new access token .
+
+        Refresh Token is also issued during user authoization.Our rest api will refresh endpoint will verify the token and 
+        cross reference the refresh tokens in our database too 
+
+GETTING TOKENS    ===>   require('crypto').randomBytes(64).toString('hex')
+
+Note* Please make sure put .env files to gitignore
+
+Functions of JSON Web Token
+
+=> jwt.sign(payload, secretOrPrivateKey, [options, callback])
+(Asynchronous) If a callback is supplied, the callback is called with the err or the JWT.
+(Synchronous) Returns the JsonWebToken as string
+payload could be an object literal, buffer or string representing valid JSON.
+If payload is not a buffer or a string, it will be coerced into a string using JSON.stringify.
+
+=> HMAC (Hash Based Message Authentication)
+https://www.techtarget.com/searchsecurity/definition/Hash-based-Message-Authentication-Code-HMAC

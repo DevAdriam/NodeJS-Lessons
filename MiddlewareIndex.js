@@ -1,51 +1,52 @@
-//  What is Middleware ?
-/* A request handler with access to the application's request-response cycle is known as middleware. 
-It's a function that holds the request object, the response object, and the middleware function. 
-Middleware can also send the response to the server before the request*/
-
-// Start with built-in Middleware
 const express = require("express");
 const app = express();
 const path = require("path");
-const { logger } = require("./middleware/logEvents");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
+const { logger } = require("./middleware/logEvents");
+const verifyJWT = require("./middleware/JWTverify");
+const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 3500;
 
-//Custom Middleware (very top)
+// custom middleware logger
 app.use(logger);
 
-//Cross Origin Resource Sharing
+// Handle options credentials check - before CORS!
+// and fetch cookies credentials requirement
+
+// Cross Origin Resource Sharing
 app.use(cors(corsOptions));
 
-//built-in middleware to handle urlencoded data ,in other words , Form Data:
-// "content-type : application/x-www-form-urlencoded"
+// built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
 
 // built-in middleware for json
 app.use(express.json());
 
-//serve static file
-app.use("/", express.static(path.join(__dirname, "/public"))); // defautlt '/'
-app.use("/subdir", express.static(path.join(__dirname, "/public"))); // for subdir
+//middleware for cookies
+app.use(cookieParser());
 
-// route for subdir (Lesson 8 How to setup route with express router)
+//serve static files
+app.use("/", express.static(path.join(__dirname, "/public")));
+
+// routes
 app.use("/", require("./routes/root"));
-app.use("/subdir", require("./routes/subdir"));
-app.use("/about", require("./routes/about"));
-app.use("/employees", require("./routes/api/employee"));
 app.use("/register", require("./routes/register"));
 app.use("/auth", require("./routes/auth"));
+app.use("/refresh", require("./routes/refresh"));
+
+app.use(verifyJWT);
+app.use("/employees", require("./routes/api/employee"));
 
 app.all("*", (req, res) => {
-	res.status = 404;
+	res.status(404);
 	if (req.accepts("html")) {
-		return res.sendFile(path.join(__dirname, "views", "404.html"));
-	} else if (req.accepts("application/json")) {
-		return res.json({ error: "404 not found!" });
+		res.sendFile(path.join(__dirname, "views", "404.html"));
+	} else if (req.accepts("json")) {
+		res.json({ error: "404 Not Found" });
 	} else {
-		res.type("txt").send("404 not found");
+		res.type("txt").send("404 Not Found");
 	}
 });
 
-app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
